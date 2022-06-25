@@ -3,7 +3,7 @@ import App from './App.js';
 import Card from './Card.js';
 import api from '../utils/Api.js';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
@@ -41,7 +41,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
 
             <section className='places'>
                 <ul className='table'>
-                    {initialCards.map((card) => <Card card={card} key={card._id}></Card>)}
+                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick}></Card>)}
                 </ul>
             </section>
         </div>

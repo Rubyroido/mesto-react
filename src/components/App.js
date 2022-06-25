@@ -10,6 +10,7 @@ function App() {
   const [isEditProfilePopupOpen, openProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, openPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, openAvatarPopup] = React.useState(false);
+  const [selectedCard, handleCardClick] = React.useState();
 
   function openEditProfile() {
     openProfilePopup(true);
@@ -27,13 +28,18 @@ function App() {
     openProfilePopup(false);
     openPlacePopup(false);
     openAvatarPopup(false);
+    handleCardClick();
+  }
+
+  function setSelectedCard(card) {
+    handleCardClick(card);
   }
 
   return (
     <div className='body'>
       <div className='page'>
         <Header />
-        <Main onEditProfile={openEditProfile} onAddPlace={openAddPlace} onEditAvatar={openEditAvatar} />
+        <Main onEditProfile={openEditProfile} onAddPlace={openAddPlace} onEditAvatar={openEditAvatar} onCardClick={setSelectedCard}/>
         <Footer />
 
         <PopupWithForm name='form-user' title='Редактировать профиль' saveButton='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
@@ -60,7 +66,7 @@ function App() {
 
         <PopupWithForm name='delete' title='Вы уверены?' saveButton='Да' />
 
-        <ImagePopup />
+        <ImagePopup onClose={closeAllPopups} card={selectedCard} />
         
       </div>
     </div>
