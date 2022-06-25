@@ -1,21 +1,26 @@
 import React from 'react';
 import App from './App.js';
+import Card from './Card.js';
 import api from '../utils/Api.js';
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
     const [userName, setUserName] = React.useState('');
     const [userDescription, setUserDescription] = React.useState('');
     const [userAvatar, setUserAvatar] = React.useState('');
+    const [initialCards, setinitialCards] = React.useState([]);
 
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([data, items]) => {
-            setUserName(data.name);
-            setUserDescription(data.about);
-            setUserAvatar(data.avatar);
-        })
-        .catch((err) => {
-            (console.log(err));
-        });
+    React.useEffect(() => {
+        Promise.all([api.getUserInfo(), api.getInitialCards()])
+            .then(([data, items]) => {
+                setUserName(data.name);
+                setUserDescription(data.about);
+                setUserAvatar(data.avatar);
+                setinitialCards([...items]);
+            })
+            .catch((err) => {
+                (console.log(err));
+            });
+    })
 
     return (
         <div className='main'>
@@ -35,7 +40,9 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
             </section>
 
             <section className='places'>
-                <ul className='table'></ul>
+                <ul className='table'>
+                    {initialCards.map((card) => <Card card={card} key={card._id}></Card>)}
+                </ul>
             </section>
         </div>
     )
