@@ -3,6 +3,7 @@ import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
+import ImagePopup from './ImagePopup.js';
 
 
 function App() {
@@ -37,15 +38,8 @@ function App() {
 
         <PopupWithForm name='delete' title='Вы уверены?' saveButton='Да' />
 
-
-        <div className='popup popup_type_photo'>
-          <div className='popup__photo-container'>
-            <img src='#' alt='фотография' className='popup__photo' />
-            <p className='popup__photo-name'></p>
-            <button type='button' className='popup__button-close popup__button-close_type-photo-card'></button>
-          </div>
-        </div>
-
+        <ImagePopup />
+        
         <template id='place-template'>
           <li className='table__cell'>
             <img src='#' alt='фотография' className='table__photo' />
