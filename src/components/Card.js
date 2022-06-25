@@ -12,11 +12,11 @@ function Card(props) {
             <div className='table__photo-description'>
                 <h2 className='table__photo-name'>{props.card.name}</h2>
                 <div className='table__like-container'>
-                    <button type='button' className='table__button-like'></button>
+                    <button type='button' className='table__button-like' />
                     <p className='table__like-counter'>{props.card.likes.length}</p>
                 </div>
             </div>
-            <button type='button' className='table__button-delete'></button>
+            <button type='button' className='table__button-delete' />
         </li>
     )
 }

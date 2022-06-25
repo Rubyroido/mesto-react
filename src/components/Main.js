@@ -20,28 +20,28 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             .catch((err) => {
                 (console.log(err));
             });
-    })
+    }, [])
 
     return (
         <div className='main'>
             <section className='profile'>
                 <div className='profile__card'>
                     <div className='profile__avatar-container'>
-                        <button type='button' className='profile__avatar-change' onClick={onEditAvatar}></button>
+                        <button type='button' className='profile__avatar-change' onClick={onEditAvatar} />
                         <img src={userAvatar} className='profile__avatar' />
                     </div>
                     <div className='profile__info'>
                         <h1 className='profile__name'>{userName}</h1>
-                        <button type='button' className='profile__button-edit' onClick={onEditProfile}></button>
+                        <button type='button' className='profile__button-edit' onClick={onEditProfile} />
                         <p className='profile__description'>{userDescription}</p>
                     </div>
                 </div>
-                <button type='button' className='profile__button-add' onClick={onAddPlace}></button>
+                <button type='button' className='profile__button-add' onClick={onAddPlace} />
             </section>
 
             <section className='places'>
                 <ul className='table'>
-                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick}></Card>)}
+                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick} />)}
                 </ul>
             </section>
         </div>
