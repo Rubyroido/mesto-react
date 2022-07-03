@@ -6,17 +6,25 @@ import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [initialCards, setinitialCards] = React.useState([]);
+    const [initialCards, setinItialCards] = React.useState([]);
 
     React.useEffect(() => {
         api.getInitialCards()
             .then((items) => {
-                setinitialCards([...items]);
+                setinItialCards([...items]);
             })
             .catch((err) => {
                 (console.log(err));
             });
     }, [])
+
+    function handleCardLike(card) {
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+        api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+            setinItialCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        });
+    }
 
     return (
         <div className='main'>
@@ -37,7 +45,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
             <section className='places'>
                 <ul className='table'>
-                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick} />)}
+                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={handleCardLike} />)}
                 </ul>
             </section>
         </div>

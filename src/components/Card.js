@@ -21,13 +21,17 @@ function Card(props) {
         props.onCardClick(props.card);
     }
 
+    function handleLikeClick() {
+        props.onCardLike(props.card);
+    }
+
     return (
         <li className='table__cell'>
             <img src={props.card.link} alt='фотография' className='table__photo' onClick={handleClick} />
             <div className='table__photo-description'>
                 <h2 className='table__photo-name'>{props.card.name}</h2>
                 <div className='table__like-container'>
-                    <button type='button' className={cardLikeButtonClassName} />
+                    <button type='button' className={cardLikeButtonClassName} onClick={handleLikeClick} />
                     <p className='table__like-counter'>{props.card.likes.length}</p>
                 </div>
             </div>
