@@ -23,6 +23,17 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
         api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
             setinItialCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        }).catch((err) => {
+            (console.log(err));
+        });
+    }
+
+    function handleCardDelete(card) {
+        api.deleteCard(card._id).then(() => {
+            let newCards = initialCards.filter((c) => c._id === card._id);
+            setinItialCards(newCards);
+        }).catch((err) => {
+            (console.log(err));
         });
     }
 
@@ -45,7 +56,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
             <section className='places'>
                 <ul className='table'>
-                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={handleCardLike} />)}
+                    {initialCards.map((card) => <Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />)}
                 </ul>
             </section>
         </div>
