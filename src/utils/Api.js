@@ -27,13 +27,13 @@ class Api {
       .then(this.handleResponse);
   }
 
-  updateProfile(item) {
+  updateProfile({name, about}) {
     return fetch(`${this.url}users/me`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        name: item.name,
-        about: item.description
+        name,
+        about
       })
     })
       .then(this.handleResponse);

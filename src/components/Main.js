@@ -1,5 +1,4 @@
 import React from 'react';
-import App from './App.js';
 import Card from './Card.js';
 import api from '../utils/Api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
