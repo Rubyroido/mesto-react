@@ -27,7 +27,7 @@ class Api {
       .then(this.handleResponse);
   }
 
-  updateProfile({name, about}) {
+  updateProfile({ name, about }) {
     return fetch(`${this.url}users/me`, {
       method: 'PATCH',
       headers: this.headers,
@@ -64,7 +64,7 @@ class Api {
       method: isLiked ? 'PUT' : 'DELETE',
       headers: this.headers
     })
-    .then(this.handleResponse);
+      .then(this.handleResponse);
   }
 
   updateAvatar(avatar) {

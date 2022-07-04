@@ -63,6 +63,19 @@ function App() {
       })
   }
 
+  function handleUpdateAvatar(data) {
+    api.updateAvatar(data.avatar)
+      .then((data) => {
+        getUser(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        closeAllPopups();
+      })
+  }
+
   return (
     <div className='body'>
       <div className='page'>
@@ -77,7 +90,7 @@ function App() {
           <Footer />
 
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
         </CurrentUserContext.Provider>
 
