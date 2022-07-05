@@ -39,13 +39,13 @@ class Api {
       .then(this.handleResponse);
   }
 
-  createNewCard(card) {
+  createNewCard({name, link}) {
     return fetch(`${this.url}cards`, {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify({
-        name: card.name,
-        link: card.link
+        name,
+        link
       })
     })
       .then(this.handleResponse);
