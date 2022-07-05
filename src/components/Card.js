@@ -1,5 +1,4 @@
 import React from 'react';
-import App from './App.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
 function Card(props) {
@@ -31,7 +30,7 @@ function Card(props) {
 
     return (
         <li className='table__cell'>
-            <img src={props.card.link} alt='фотография' className='table__photo' onClick={handleClick} />
+            <img src={props.card.link} alt={props.card.name} className='table__photo' onClick={handleClick} />
             <div className='table__photo-description'>
                 <h2 className='table__photo-name'>{props.card.name}</h2>
                 <div className='table__like-container'>

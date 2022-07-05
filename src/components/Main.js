@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from './Card.js';
-import api from '../utils/Api.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
@@ -12,7 +11,7 @@ function Main(props) {
                 <div className='profile__card'>
                     <div className='profile__avatar-container'>
                         <button type='button' className='profile__avatar-change' onClick={props.onEditAvatar} />
-                        <img src={currentUser.avatar} className='profile__avatar' />
+                        <img alt='аватар' src={currentUser.avatar} className='profile__avatar' />
                     </div>
                     <div className='profile__info'>
                         <h1 className='profile__name'>{currentUser.name}</h1>
@@ -25,11 +24,13 @@ function Main(props) {
 
             <section className='places'>
                 <ul className='table'>
-                    {props.cards.map((card) => <Card card={card} 
+                    {props.cards.map((card) => (
+                    <Card card={card} 
                     key={card._id} 
                     onCardClick={props.onCardClick} 
                     onCardLike={props.onCardLike} 
-                    onCardDelete={props.onCardDelete} />)}
+                    onCardDelete={props.onCardDelete} />)
+                    )}
                 </ul>
             </section>
         </div>

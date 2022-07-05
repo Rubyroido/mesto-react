@@ -12,28 +12,17 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 
 function App() {
-  const [isEditProfilePopupOpen, openProfilePopup] = React.useState(false);
-  const [isAddPlacePopupOpen, openPlacePopup] = React.useState(false);
-  const [isEditAvatarPopupOpen, openAvatarPopup] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, handleCardClick] = React.useState(null);
-  const [currentUser, getUser] = React.useState({});
-  const [cards, getCardsList] = React.useState([]);
-
-  // React.useEffect(() => {
-  //   Promise.all([api.getUserInfo(), api.getInitialCards()])
-  //     .then(([data, items]) => {
-  //       getUser(data);
-  //       getCardsList([...items]);
-  //     })
-  //     .catch((err) => {
-  //       (console.log(err));
-  //     });
-  // }, [])
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getUserInfo()
       .then((data) => {
-        getUser(data);
+        setCurrentUser(data);
       })
       .catch((err) => {
         (console.log(err));
@@ -43,7 +32,7 @@ function App() {
   React.useEffect(() => {
     api.getInitialCards()
       .then((items) => {
-        getCardsList([...items]);
+        setCards([...items]);
       })
       .catch((err) => {
         (console.log(err));
@@ -51,23 +40,40 @@ function App() {
   }, [])
 
   function openEditProfile() {
-    openProfilePopup(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function openAddPlace() {
-    openPlacePopup(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function openEditAvatar() {
-    openAvatarPopup(true);
+    setIsEditAvatarPopupOpen(true);
   }
 
   function closeAllPopups() {
-    openProfilePopup(false);
-    openPlacePopup(false);
-    openAvatarPopup(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
     handleCardClick(null);
   }
+
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard;
+
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen])
+
 
   function setSelectedCard(card) {
     handleCardClick(card);
@@ -76,7 +82,7 @@ function App() {
   function handleUpdateUser(user) {
     api.updateProfile(user)
       .then((data) => {
-        getUser(data);
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -87,7 +93,7 @@ function App() {
   function handleUpdateAvatar(data) {
     api.updateAvatar(data.avatar)
       .then((data) => {
-        getUser(data);
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -98,7 +104,7 @@ function App() {
   function handleAddPlaceSubmit(card) {
     api.createNewCard(card)
       .then((data) => {
-        getCardsList([data, ...cards]);
+        setCards([data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => {
@@ -110,7 +116,7 @@ function App() {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      getCardsList((state) => state.map((c) => c._id === card._id ? newCard : c));
+      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
     }).catch((err) => {
       (console.log(err));
     });
@@ -118,8 +124,7 @@ function App() {
 
   function handleCardDelete(card) {
     api.deleteCard(card._id).then(() => {
-      const newCards = cards.filter((c) => c._id !== card._id);
-      getCardsList(newCards);
+      setCards((state) => state.filter((c) => c._id !== card._id));
     }).catch((err) => {
       (console.log(err));
     });
