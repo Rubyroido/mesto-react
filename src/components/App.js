@@ -16,16 +16,28 @@ function App() {
   const [isEditAvatarPopupOpen, openAvatarPopup] = React.useState(false);
   const [selectedCard, handleCardClick] = React.useState(null);
   const [currentUser, getUser] = React.useState({});
+  const [cards, getCardsList] = React.useState([]);
+
+  // React.useEffect(() => {
+  //   api.getUserInfo()
+  //     .then((data) => {
+  //       getUser(data)
+  //     })
+  //     .catch((err) => {
+  //       (console.log(err));
+  //     });
+  // }, []);
 
   React.useEffect(() => {
-    api.getUserInfo()
-      .then((data) => {
-        getUser(data)
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([data, items]) => {
+        getUser(data);
+        getCardsList([...items]);
       })
       .catch((err) => {
         (console.log(err));
       });
-  }, []);
+  }, [])
 
   function openEditProfile() {
     openProfilePopup(true);
@@ -54,12 +66,10 @@ function App() {
     api.updateProfile(item)
       .then((data) => {
         getUser(data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        closeAllPopups();
       })
   }
 
@@ -67,13 +77,30 @@ function App() {
     api.updateAvatar(data.avatar)
       .then((data) => {
         getUser(data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        closeAllPopups();
-      })
+  }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+      getCardsList((state) => state.map((c) => c._id === card._id ? newCard : c));
+    }).catch((err) => {
+      (console.log(err));
+    });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then(() => {
+      let newCards = cards.filter((c) => c._id === card._id);
+      getCardsList(newCards);
+    }).catch((err) => {
+      (console.log(err));
+    });
   }
 
   return (
@@ -86,7 +113,10 @@ function App() {
             onEditProfile={openEditProfile}
             onAddPlace={openAddPlace}
             onEditAvatar={openEditAvatar}
-            onCardClick={setSelectedCard} />
+            onCardClick={setSelectedCard}
+            cards={cards}
+            onCardLike={handleCardLike}
+            handleCardDelete={handleCardDelete} />
           <Footer />
 
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
