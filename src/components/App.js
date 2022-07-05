@@ -118,7 +118,7 @@ function App() {
 
   function handleCardDelete(card) {
     api.deleteCard(card._id).then(() => {
-      const newCards = cards.filter((c) => c._id === card._id);
+      const newCards = cards.filter((c) => c._id !== card._id);
       getCardsList(newCards);
     }).catch((err) => {
       (console.log(err));
@@ -138,7 +138,7 @@ function App() {
             onCardClick={setSelectedCard}
             cards={cards}
             onCardLike={handleCardLike}
-            handleCardDelete={handleCardDelete} />
+            onCardDelete={handleCardDelete} />
           <Footer />
 
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
