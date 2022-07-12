@@ -8,10 +8,8 @@
 ## Стек:
 - html, css
 - javascript, React.js
-- oop
 - API
 - webpack
-- Babel
 - BEM
 - git, figma
 
